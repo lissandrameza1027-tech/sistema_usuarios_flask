@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Perfil{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Editar Perfil ({{ user.username|capitalize }})</h2>
+    <form method="POST" novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.username.label }}
+            {{ form.username(class="form-control") }}
+            {% for error in form.username.errors %}
+                <div class="field-error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.email.label }}
+            {{ form.email(class="form-control") }}
+            {% for error in form.email.errors %}
+                <div class="field-error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="actions">
+            {{ form.submit(class="btn btn-primary") }}
+            <a href="{{ url_for('user_bp.profile', id=user.id) }}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

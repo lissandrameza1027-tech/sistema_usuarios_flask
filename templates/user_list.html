@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Usuarios{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Usuarios Registrados</h2>
+    
+    {% if users %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Correo Electrónico</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username|capitalize }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <div class="actions">
+                                <a href="{{ url_for('user_bp.profile', id=user.id) }}" class="btn btn-secondary btn-sm">Ver</a>
+                                {% if session.get('user_id') == user.id %}
+                                    <a href="{{ url_for('user_bp.edit_profile', id=user.id) }}" class="btn btn-primary btn-sm">Editar</a>
+                                    <form action="{{ url_for('user_bp.delete_user', id=user.id) }}" method="POST" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas eliminar tu cuenta?');">Eliminar</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay usuarios registrados actualmente.</p>
+    {% endif %}
+</div>
+{% endblock %}
